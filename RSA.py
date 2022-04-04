@@ -2,6 +2,8 @@
 #cs427
 #Python3
 
+import random
+
 descKey = 65537
 
 testp = "9da5"
@@ -18,6 +20,9 @@ uninvertedmsgtest = "1bcbce1"
 
 
 def rsasign():
+
+
+    modulusN = q*p
     return
 
 def rsaverify():
@@ -26,5 +31,4 @@ def rsaverify():
 
 
 if __name__ == '__main__':
-
-
+    rsasign()
