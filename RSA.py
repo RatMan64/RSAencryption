@@ -46,7 +46,7 @@ def elfhash(s):
         if(high):
             h ^= high >> 24
         #need to flip bits
-        tempstr = bin(high)
+        tempstr = bin(high)[2:]
         tempstr = tempstr.replace('1','2')
         tempstr = tempstr.replace('0','1')
         tempstr = tempstr.replace('2','0')
@@ -69,6 +69,7 @@ def uclid(a, n):
     return t
 def rsasign(message):
     messagehash = elfhash(message)
+    print(hex(messagehash))
     #todo prime function for p and q
     p = int(testp,16)
     q = int(testq,16)
@@ -84,24 +85,27 @@ def rsasign(message):
     return
 def rsaverify(N, message, sig):
     return
+# def rsa():
+#     data = input()
+#     args = data.split()
+#     if(len(args) <2):
+#         print("invalid arguments")
+#         return
+#     if(len(args) <3):#sign
+#         if(data[0] != "sign"):
+#             print("invalid input")
+#             return
+#         print("sign starting")
+#         rsasign(data[1])
+#         return
+#     elif(len(args)<4):#verify
+#         if(data[0]!= "verify"):
+#             print("invalid input")
+#             return
+#         print("verify starting")
+#         rsaverify(data[1], data[2], data[3])
+#         return
 def rsa():
-    data = input()
-    args = data.split()
-    if(len(args) <2):
-        print("invalid arguments")
-        return
-    if(len(args) <3):#sign
-        if(data[0] != "sign"):
-            print("invalid input")
-            return
-        print("sign starting")
-        rsasign(data[1])
-        return
-    elif(len(args)<4):#verify
-        if(data[0]!= "verify"):
-            print("invalid input")
-            return
-        print("verify starting")
-        rsaverify(data[1], data[2], data[3])
-        return
+    rsasign("hello, friend!")
+
 rsa()
