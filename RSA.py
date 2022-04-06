@@ -63,16 +63,10 @@ def elfhash(s):
     high = 0
     for i in s:
         h = (h << 4) + ord(i)
-        high = h & int("F0000000", 16)
+        high = h & 0xF0000000
         if (high):
             h ^= high >> 24
-        # need to flip bits
-        tempstr = f'{high:032b}'
-        tempstr = tempstr.replace('1', '2')
-        tempstr = tempstr.replace('0', '1')
-        tempstr = tempstr.replace('2', '0')
-        high = int(tempstr, 2)
-        h &= high
+        h &= (0xFFFFFFFF^high)
     return h
 def uclid(a, n):
     t = 0
@@ -95,14 +89,14 @@ def rsasign(message):
     messagehash = elfhash(message)
 
 
-    # p = int(testp, 16)
-    # q = int(testq, 16)
-    p = random.randint(int("8000",16), int("FFFF",16))
-    while(prime(p,20)!= 1):
-        p = random.randint(int("8000",16), int("FFFF",16))
-    q = random.randint(0,65535)
-    while prime(q,20) != 1:
-        q = random.randint(0, 65535)
+    p = int(testp, 16)
+    q = int(testq, 16)
+    # p = random.randint(int("8000",16), int("FFFF",16))
+    # while(prime(p,20)!= 1):
+    #     p = random.randint(int("8000",16), int("FFFF",16))
+    # q = random.randint(0,65535)
+    # while prime(q,20) != 1:
+    #     q = random.randint(0, 65535)
 
 
     N = q * p
@@ -134,24 +128,27 @@ def rsaverify(N, message, sig):
     return
 
 
-def rsa():
-    data = input()
-    args = data.split()
+# def rsa():
+#     data = input()
+#     args = data.split()
+#
+#     if(len(args) ==2):#sign
+#         if(args[0] != "sign"):
+#             print("invalid input")
+#             return
+#         print("sign starting")
+#         rsasign(args[1])
+#         return
+#     elif(len(args)==4):#verify
+#         if(args[0]!= "verify"):
+#             print("invalid input")
+#             return
+#         print("verify starting")
+#         rsaverify(args[1], args[2], args[3])
+#         return
 
-    if(len(args) ==2):#sign
-        if(args[0] != "sign"):
-            print("invalid input")
-            return
-        print("sign starting")
-        rsasign(args[1])
-        return
-    elif(len(args)==4):#verify
-        if(args[0]!= "verify"):
-            print("invalid input")
-            return
-        print("verify starting")
-        rsaverify(args[1], args[2], args[3])
-        return
+def rsa():
+    rsasign("hello, friend!")
 
 
 rsa()
