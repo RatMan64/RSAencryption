@@ -24,9 +24,9 @@ def prime(n, k):
     d = n - 1
     while ((d // 2) % 2) == 0:
         r += 1
-        d = t // 2
+        d = d // 2
     while (k > 0):
-        a = random.randrange(range(2, n - 2))
+        a = random.randrange(2, n-2)
         x = a ** d % n
         if (x == 1 or x == n - 1):
             k-=1
@@ -92,23 +92,43 @@ def uclid(a, n):
 
 def rsasign(message):
     messagehash = elfhash(message)
-    print(hex(messagehash))
-    # todo prime function for p and q
-    p = int(testp, 16)
-    q = int(testq, 16)
+
+
+    # p = int(testp, 16)
+    # q = int(testq, 16)
+    p = random.randint(0, 65535)
+    while(prime(p,20)!= 1):
+        p = random.randint(0,65535)
+    q = random.randint(0,65535)
+    while prime(q,20) != 1:
+        q = random.randint(0, 65535)
+
+
     N = q * p
     print(hex(N))
     totient = (q - 1) * (p - 1)
-    print(hex(totient))
+    print(f"p= {hex(p)[2:]}, q= { hex(q)[2:]}, n= {hex(N)[2:]}, t= {hex(totient)[2:]}"  )
+    print("received message: %s"% message)
+    print("message hash:%s" % hex(messagehash)[2:])
+
     inverse = uclid(descKey, totient)
+    print("signing with the following private key: %s" % hex(inverse)[2:])
     encrypt = pows(N, messagehash, inverse)
+    print("signed hash: %s" % hex(encrypt)[2:])
     decrypt = pows(N, encrypt, descKey)
-    print(hex(encrypt))
-    print(hex(decrypt))
+    print("uninverted message to ensure integrity: %s" % hex(decrypt)[2:])
+    print(f"complete output for verification:\n{hex(N)[2:]} '{message}' {hex(encrypt)[2:]}" )
+
     return
 
 
 def rsaverify(N, message, sig):
+    messagehash = elfhash(message)
+    decrypt = pows(int(N,16),int(sig,16),descKey )
+    if(messagehash == decrypt):
+        print("message verified!")
+        return
+    print("!!! message is forged !!!")
     return
 
 
@@ -133,7 +153,8 @@ def rsaverify(N, message, sig):
 #         rsaverify(data[1], data[2], data[3])
 #         return
 def rsa():
-    rsasign("hello, friend!")
+    # rsasign("hello, friend!")
+    rsaverify("37a5600d", "hello, friend!", "354646fb")
 
 
 rsa()
