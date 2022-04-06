@@ -46,7 +46,7 @@ def elfhash(s):
         if(high):
             h ^= high >> 24
         #need to flip bits
-        tempstr = bin(high)[2:]
+        tempstr = f'{high:032b}'
         tempstr = tempstr.replace('1','2')
         tempstr = tempstr.replace('0','1')
         tempstr = tempstr.replace('2','0')
