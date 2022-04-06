@@ -128,27 +128,25 @@ def rsaverify(N, message, sig):
     return
 
 
-# def rsa():
-#     data = input()
-#     args = data.split()
-#
-#     if(len(args) ==2):#sign
-#         if(args[0] != "sign"):
-#             print("invalid input")
-#             return
-#         print("sign starting")
-#         rsasign(args[1])
-#         return
-#     elif(len(args)==4):#verify
-#         if(args[0]!= "verify"):
-#             print("invalid input")
-#             return
-#         print("verify starting")
-#         rsaverify(args[1], args[2], args[3])
-#         return
-
 def rsa():
-    rsasign("hello, friend!")
+    data = input()
+    args = data.split()
+
+    if(len(args) ==2):#sign
+        if(args[0] != "sign"):
+            print("invalid input")
+            return
+        print("sign starting")
+        rsasign(args[1])
+        return
+    elif(len(args)==4):#verify
+        if(args[0]!= "verify"):
+            print("invalid input")
+            return
+        print("verify starting")
+        rsaverify(args[1], args[2], args[3])
+        return
+
 
 
 rsa()
