@@ -91,21 +91,22 @@ def uclid(a, n):
 
 
 def rsasign(message):
+    message = message.strip('"')
     messagehash = elfhash(message)
 
 
     # p = int(testp, 16)
     # q = int(testq, 16)
-    p = random.randint(0, 65535)
+    p = random.randint(int("8000",16), int("FFFF",16))
     while(prime(p,20)!= 1):
-        p = random.randint(0,65535)
+        p = random.randint(int("8000",16), int("FFFF",16))
     q = random.randint(0,65535)
     while prime(q,20) != 1:
         q = random.randint(0, 65535)
 
 
     N = q * p
-    print(hex(N))
+    # print(hex(N))
     totient = (q - 1) * (p - 1)
     print(f"p= {hex(p)[2:]}, q= { hex(q)[2:]}, n= {hex(N)[2:]}, t= {hex(totient)[2:]}"  )
     print("received message: %s"% message)
@@ -123,6 +124,7 @@ def rsasign(message):
 
 
 def rsaverify(N, message, sig):
+    message = message.strip('"')
     messagehash = elfhash(message)
     decrypt = pows(int(N,16),int(sig,16),descKey )
     if(messagehash == decrypt):
@@ -132,29 +134,24 @@ def rsaverify(N, message, sig):
     return
 
 
-# def rsa():
-#     data = input()
-#     args = data.split()
-#     if(len(args) <2):
-#         print("invalid arguments")
-#         return
-#     if(len(args) <3):#sign
-#         if(data[0] != "sign"):
-#             print("invalid input")
-#             return
-#         print("sign starting")
-#         rsasign(data[1])
-#         return
-#     elif(len(args)<4):#verify
-#         if(data[0]!= "verify"):
-#             print("invalid input")
-#             return
-#         print("verify starting")
-#         rsaverify(data[1], data[2], data[3])
-#         return
 def rsa():
-    # rsasign("hello, friend!")
-    rsaverify("37a5600d", "hello, friend!", "354646fb")
+    data = input()
+    args = data.split()
+
+    if(len(args) ==2):#sign
+        if(args[0] != "sign"):
+            print("invalid input")
+            return
+        print("sign starting")
+        rsasign(args[1])
+        return
+    elif(len(args)==4):#verify
+        if(args[0]!= "verify"):
+            print("invalid input")
+            return
+        print("verify starting")
+        rsaverify(args[1], args[2], args[3])
+        return
 
 
 rsa()
